@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML5 Complete Feature Showcase</title>
+
+  <!-- Google Fonts: Inter for UI, JetBrains Mono for code/readouts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN with class-based dark mode configuration -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-200 selection:bg-orange-500 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- TOP NAVIGATION BAR (Semantic <header> & <nav>)                        -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-40 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-between gap-3 py-3.5">
+        <!-- Brand / HTML5 Official-style Shield SVG -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+            <svg viewBox="0 0 32 32" class="w-6 h-6 text-white" fill="currentColor" aria-hidden="true">
+              <path d="M5 3h22l-2 22.5L16 28l-9-2.5L5 3zm16.6 7.4H10.9l.3 3.4h10.1l-.8 8.6-4.5 1.3-4.5-1.3-.3-3.5h3.2l.2 1.8 1.4.4 1.4-.4.2-2.6H8.3l-.8-9.1h14.4l-.3 1.4z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight flex items-center gap-2">
+              HTML5 Feature Lab
+              <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300">
+                Living Standard
+              </span>
+            </h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
+              Interactive sandbox covering semantics, forms, media, graphics, storage &amp; APIs
+            </p>
+          </div>
+        </div>
+
+        <!-- Search Filter & Theme Toggle -->
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+          <div class="relative flex-1 sm:w-64">
+            <input
+              type="search"
+              id="featureSearch"
+              placeholder="Filter features (e.g. canvas, dialog)..."
+              aria-label="Filter HTML5 features"
+              class="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+          </div>
+
+          <!-- Network Online Status Indicator (Navigator.onLine) -->
+          <div id="networkBadge" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="networkText">Online</span>
+          </div>
+
+          <!-- Dark / Light Mode Button -->
+          <button
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle color theme"
+            class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition"
+          >
+            <svg id="sunIcon" class="w-5 h-5 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <svg id="moonIcon" class="w-5 h-5 text-slate-700 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Navigation Bar -->
+      <nav aria-label="HTML5 Categories" class="flex items-center gap-2 overflow-x-auto pb-3 no-scrollbar">
+        <button data-cat="all" class="cat-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white shadow-sm shrink-0 transition">
+          All Features
+        </button>
+        <button data-cat="semantics" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          1. Semantics &amp; UI
+        </button>
+        <button data-cat="forms" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          2. Forms &amp; Validation
+        </button>
+        <button data-cat="media" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          3. Graphics &amp; Media
+        </button>
+        <button data-cat="storage" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          4. Storage &amp; Offline
+        </button>
+        <button data-cat="device" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          5. Device, DnD &amp; Observers
+        </button>
+        <button data-cat="apis" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition">
+          6. Workers &amp; Web APIs
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN CONTENT AREA (Semantic <main>)                                   -->
+  <!-- ===================================================================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+    <!-- Empty Search State -->
+    <div id="emptyState" class="hidden text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+      <p class="text-lg font-semibold">No matching HTML5 features found</p>
+      <p class="text-sm text-slate-500 mt-1">Try clearing your search filter or selecting "All Features".</p>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 1: SEMANTIC ELEMENTS & NATIVE INTERACTIVE WIDGETS           -->
+    <!-- =================================================================== -->
+    <section data-section="semantics" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 01</span>
+          <h2 class="text-2xl font-bold tracking-tight">Semantic Structure &amp; Native UI Elements</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Meaningful tags that give structure, accessibility, and built-in interactivity without JS bloat.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card 1.1: Native <dialog>, <details>, <summary>, <mark>, <time>, <ruby>, <bdi> -->
+        <article data-keywords="dialog modal details summary mark time ruby bdi wbr semantic" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold">Native Interactive &amp; Text Semantics</h3>
+                <p class="text-xs font-mono text-slate-500 mt-0.5">&lt;dialog&gt;, &lt;details&gt;, &lt;summary&gt;, &lt;mark&gt;, &lt;time&gt;, &lt;ruby&gt;, &lt;bdi&gt;</p>
+              </div>
+              <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">Native HTML5</span>
+            </div>
+
+            <!-- Live Demo Box -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-4 text-sm">
+              <!-- <mark> & <time> -->
+              <p class="leading-relaxed">
+                HTML5 was published as a W3C Recommendation on
+                <time datetime="2014-10-28" class="font-mono font-semibold text-indigo-600 dark:text-indigo-400 underline decoration-dotted">October 28, 2014</time>,
+                introducing <mark class="px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-400/30 text-slate-900 dark:text-amber-100 font-medium">highlighted text</mark>
+                and bidirectional isolation like <bdi class="font-semibold text-emerald-700 dark:text-emerald-300">إيان (Ian)</bdi> so RTL names don't scramble surrounding punctuation!
+              </p>
+
+              <!-- <ruby>, <rt>, <rp> East Asian Typography Annotation -->
+              <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                <span class="text-xs text-slate-500">Ruby Annotation (&lt;ruby&gt;):</span>
+                <ruby class="text-lg font-semibold">
+                  東京 <rp>(</rp><rt class="text-xs text-orange-600 dark:text-orange-400 font-normal">とうきょう</rt><rp>)</rp>
+                  &nbsp;香港 <rp>(</rp><rt class="text-xs text-orange-600 dark:text-orange-400 font-normal">Hoeng1 Gong2</rt><rp>)</rp>
+                </ruby>
+              </div>
+
+              <!-- Native <dialog> trigger -->
+              <div class="flex flex-wrap items-center gap-3">
+                <button id="openDialogBtn" type="button" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm transition">
+                  Open Native &lt;dialog&gt; Modal
+                </button>
+                <span id="dialogResult" class="text-xs font-mono text-slate-500">Dialog status: Closed</span>
+              </div>
+
+              <!-- Native <details> & <summary> accordion -->
+              <details class="group rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-3">
+                <summary class="cursor-pointer font-semibold text-xs flex items-center justify-between select-none">
+                  <span>Zero-JS Accordion via &lt;details&gt; &amp; &lt;summary&gt;</span>
+                  <span class="text-orange-500 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  This disclosure widget expands and collapses natively in the browser without a single line of JavaScript!
+                </p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Native <dialog> element -->
+          <dialog id="nativeDialog" class="rounded-2xl p-0 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm max-w-md w-11/12">
+            <form method="dialog" class="p-6 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold">Native HTML5 &lt;dialog&gt;</h4>
+                <span class="text-xs font-mono px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300">.showModal()</span>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Built-in focus trapping, <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">Escape</code> key dismissal, top-layer rendering, and <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">::backdrop</code> styling!
+              </p>
+              <div class="flex justify-end gap-2 pt-2">
+                <button value="cancelled" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">Cancel</button>
+                <button value="confirmed" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Confirm Action</button>
+              </div>
+            </form>
+          </dialog>
+        </article>
+
+        <!-- Card 1.2: <progress>, <meter>, <output>, and Semantic Document Map -->
+        <article data-keywords="progress meter output header nav main section article aside footer figure figcaption" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold">Data Gauges &amp; Semantic Page Layout</h3>
+                <p class="text-xs font-mono text-slate-500 mt-0.5">&lt;progress&gt;, &lt;meter&gt;, &lt;output&gt;, &lt;figure&gt;, &lt;figcaption&gt;</p>
+              </div>
+              <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">Native HTML5</span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-4">
+              <!-- Interactive Slider controlling <progress>, <meter>, and <output> -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs font-medium">
+                  <label for="gaugeSlider">Adjust Value (0–100):</label>
+                  <output id="gaugeOutput" for="gaugeSlider" class="font-mono font-bold text-orange-600 dark:text-orange-400">72%</output>
+                </div>
+                <input id="gaugeSlider" type="range" min="0" max="100" value="72" class="w-full accent-orange-600 cursor-pointer" />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="font-semibold">&lt;progress&gt; Task Completion</span>
+                  </div>
+                  <progress id="demoProgress" value="72" max="100" class="w-full h-3 rounded-lg overflow-hidden"></progress>
+                  <p class="text-[11px] text-slate-500">Represents progress of an ongoing task.</p>
+                </div>
+
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="font-semibold">&lt;meter&gt; Scalar Gauge</span>
+                  </div>
+                  <meter id="demoMeter" min="0" max="100" low="30" high="80" optimum="50" value="72" class="w-full h-3"></meter>
+                  <p class="text-[11px] text-slate-500">Changes color across low/optimum/high thresholds.</p>
+                </div>
+              </div>
+
+              <!-- Semantic <figure> & <figcaption> Blueprint -->
+              <figure class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                <div class="grid grid-cols-4 gap-1.5 text-[10px] font-mono text-center font-semibold">
+                  <div class="col-span-4 py-1.5 rounded bg-orange-100 dark:bg-orange-500/20 text-orange-800 dark:text-orange-300">&lt;header&gt; + &lt;nav&gt;</div>
+                  <div class="col-span-3 py-4 rounded bg-indigo-100 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-300">&lt;main&gt; &rarr; &lt;section&gt; &rarr; &lt;article&gt;</div>
+                  <div class="col-span-1 py-4 rounded bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300">&lt;aside&gt;</div>
+                  <div class="col-span-4 py-1.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">&lt;footer&gt;</div>
+                </div>
+                <figcaption class="text-[11px] text-slate-500 mt-2 text-center">
+                  Fig 1. HTML5 Document Landmark Architecture (&lt;figure&gt; &amp; &lt;figcaption&gt;)
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 2: NEXT-GEN FORMS, INPUT TYPES & VALIDATION                 -->
+    <!-- =================================================================== -->
+    <section data-section="forms" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 02</span>
+          <h2 class="text-2xl font-bold tracking-tight">Forms, 13 New Input Types &amp; Validation</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Native pickers, autocomplete datalists, constraint validation, and rich attributes.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card 2.1: All HTML5 Input Types + Datalist -->
+        <article data-keywords="input color date datetime-local month week time email url tel number range search datalist" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">HTML5 Input Types &amp; &lt;datalist&gt;</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">color, date, time, week, month, range, search, datalist</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300">13 Input Types</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="color"</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="colorInput" value="#f97316" class="h-9 w-14 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent cursor-pointer" />
+                <span id="colorHex" class="font-mono text-slate-500">#f97316</span>
+              </div>
+            </label>
+
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="date"</span>
+              <input type="date" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            </label>
+
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="datetime-local"</span>
+              <input type="datetime-local" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            </label>
+
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="time"</span>
+              <input type="time" value="14:30" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            </label>
+
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="week"</span>
+              <input type="week" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            </label>
+
+            <label class="block space-y-1">
+              <span class="font-medium text-slate-600 dark:text-slate-300">type="month"</span>
+              <input type="month" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            </label>
+
+            <!-- <datalist> Autocomplete -->
+            <label class="block space-y-1 sm:col-span-2">
+              <span class="font-medium text-slate-600 dark:text-slate-300">&lt;datalist&gt; Native Autocomplete (Type or double-click)</span>
+              <input list="html5Engines" placeholder="Choose or type a browser engine..." class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-orange-500 outline-none" />
+              <datalist id="html5Engines">
+                <option value="Blink (Chromium / Chrome / Edge)"></option>
+                <option value="WebKit (Safari)"></option>
+                <option value="Gecko (Firefox)"></option>
+                <option value="Servo (Experimental Rust Engine)"></option>
+              </datalist>
+            </label>
+          </div>
+        </article>
+
+        <!-- Card 2.2: Constraint Validation API & Rich Attributes -->
+        <article data-keywords="validation required pattern email url number contenteditable spellcheck dataset" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">Constraint Validation &amp; Editable Attributes</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">required, pattern, validityState, contenteditable, data-*</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300">Validation API</span>
+          </div>
+
+          <form id="validationForm" class="space-y-3 text-xs" novalidate>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="block space-y-1">
+                <span class="font-medium">Email (<code class="font-mono">type="email"</code>)</span>
+                <input id="valEmail" type="email" required placeholder="dev@example.com" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-orange-500 outline-none" />
+              </label>
+
+              <label class="block space-y-1">
+                <span class="font-medium">Hex Code (<code class="font-mono">pattern="^#[0-9A-Fa-f]{6}$"</code>)</span>
+                <input id="valPattern" type="text" required pattern="^#[0-9A-Fa-f]{6}$" placeholder="#FF5733" class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-orange-500 outline-none" />
+              </label>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <button type="submit" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold transition">
+                Inspect ValidityState
+              </button>
+              <span id="validationOutput" class="font-mono text-slate-500">Fill fields &amp; click inspect</span>
+            </div>
+          </form>
+
+          <!-- contenteditable + spellcheck + data-* attributes -->
+          <div class="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold">Live <code class="font-mono text-orange-500">contenteditable="true"</code> &amp; <code class="font-mono text-orange-500">spellcheck</code>:</span>
+              <span id="datasetBadge" data-version="5.3" data-spec="WHATWG" class="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                dataset: loading...
+              </span>
+            </div>
+            <div contenteditable="true" spellcheck="true" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-dashed border-slate-300 dark:border-slate-600 text-xs focus:outline-none focus:border-orange-500">
+              Click anywhere inside this box and edit me directly in the browser! Try typing a mispelled word to test native spellcheck.
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 3: GRAPHICS & MULTIMEDIA                                    -->
+    <!-- =================================================================== -->
+    <section data-section="media" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 03</span>
+          <h2 class="text-2xl font-bold tracking-tight">2D Canvas, Inline SVG &amp; Plugin-Free Media</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Hardware-accelerated raster drawing, crisp vector graphics, and native audio/video streams.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Card 3.1: HTML5 <canvas> Interactive Sketch & Particle Pad -->
+        <article data-keywords="canvas 2d context draw touch paint graphics" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold">&lt;canvas&gt; 2D Graphics</h3>
+                <p class="text-xs font-mono text-slate-500">Mouse &amp; Touch Drawing Pad</p>
+              </div>
+              <button id="clearCanvasBtn" type="button" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                Clear
+              </button>
+            </div>
+            <div id="canvasWrapper" class="w-full h-48 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 relative">
+              <canvas id="demoCanvas" class="w-full h-full block cursor-crosshair touch-none"></canvas>
+              <span class="absolute bottom-2 right-2.5 text-[10px] font-mono text-slate-400 pointer-events-none">Draw with mouse or finger</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center gap-1.5">
+              <button data-brush="#f97316" class="brush-swatch w-5 h-5 rounded-full bg-orange-500 ring-2 ring-offset-2 ring-orange-500 dark:ring-offset-slate-900"></button>
+              <button data-brush="#38bdf8" class="brush-swatch w-5 h-5 rounded-full bg-sky-400"></button>
+              <button data-brush="#34d399" class="brush-swatch w-5 h-5 rounded-full bg-emerald-400"></button>
+              <button data-brush="#f472b6" class="brush-swatch w-5 h-5 rounded-full bg-pink-400"></button>
+            </div>
+            <button id="burstCanvasBtn" type="button" class="text-orange-600 dark:text-orange-400 font-semibold hover:underline">
+              + Spawn Harmonic Wave
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 3.2: Inline <svg> Interactive Vector Playground -->
+        <article data-keywords="svg vector scalable graphics polygon circle transform" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold">Inline &lt;svg&gt; Vectors</h3>
+                <p class="text-xs font-mono text-slate-500">Resolution-Independent DOM</p>
+              </div>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-sky-100 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300">XML / SVG</span>
+            </div>
+
+            <div class="w-full h-48 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
+              <svg id="interactiveSvg" viewBox="0 0 200 200" class="w-40 h-40 transition-transform duration-300">
+                <defs>
+                  <linearGradient id="svgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f97316" />
+                    <stop offset="100%" stop-color="#6366f1" />
+                  </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="82" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="2" stroke-dasharray="6 4" />
+                <polygon id="svgStar" points="100,20 122,74 180,78 135,116 149,174 100,142 51,174 65,116 20,78 78,74" fill="url(#svgGrad)" />
+                <circle id="svgCore" cx="100" cy="100" r="22" fill="#ffffff" fill-opacity="0.9" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="space-y-1 text-xs">
+            <div class="flex justify-between">
+              <label for="svgRotate">Rotate &amp; Scale Vector:</label>
+              <span id="svgDegLabel" class="font-mono text-slate-500">0°</span>
+            </div>
+            <input id="svgRotate" type="range" min="0" max="360" value="0" class="w-full accent-indigo-600 cursor-pointer" />
+          </div>
+        </article>
+
+        <!-- Card 3.3: Native <audio>, <video> & <picture> -->
+        <article data-keywords="audio video picture source track media stream" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <div>
+              <h3 class="text-lg font-bold">&lt;audio&gt; &amp; &lt;video&gt; Native Media</h3>
+              <p class="text-xs font-mono text-slate-500">Self-Contained Synthesized Streams</p>
+            </div>
+
+            <!-- Native <audio> element populated with dynamically generated WAV Blob -->
+            <div class="space-y-1">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300 block">&lt;audio controls&gt; (Synthesized Chord WAV):</span>
+              <audio id="nativeAudio" controls class="w-full h-9 rounded-lg"></audio>
+            </div>
+
+            <!-- Native <video> element populated with live procedural MediaStream -->
+            <div class="space-y-1">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-300 block">&lt;video controls&gt; (Live Canvas Stream):</span>
+              <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950">
+                <video id="nativeVideo" controls muted playsinline class="w-full h-28 object-cover block"></video>
+              </div>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-500">Zero external MP3/MP4 URLs needed—generated directly via Web Audio &amp; <code class="font-mono">captureStream()</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 4: CLIENT-SIDE STORAGE & OFFLINE CAPABILITIES               -->
+    <!-- =================================================================== -->
+    <section data-section="storage" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 04</span>
+          <h2 class="text-2xl font-bold tracking-tight">Client-Side Storage &amp; IndexedDB</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Persistent key-value storage and asynchronous structured databases in the browser.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card 4.1: Web Storage API (localStorage & sessionStorage) -->
+        <article data-keywords="localstorage sessionstorage storage persist key value" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">Web Storage API</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">window.localStorage &amp; window.sessionStorage</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">Synchronous</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <input id="storageKey" type="text" placeholder="Key (e.g. username)" class="px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            <input id="storageVal" type="text" placeholder="Value (e.g. Ada)" class="px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            <select id="storageType" class="px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <option value="local">localStorage (Persistent)</option>
+              <option value="session">sessionStorage (Tab-only)</option>
+            </select>
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button id="saveStorageBtn" type="button" class="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold transition">Save Entry</button>
+            <button id="clearStorageBtn" type="button" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold transition">Clear Demo Keys</button>
+          </div>
+
+          <div id="storageList" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-xs min-h-[72px] space-y-1">
+            <!-- Populated dynamically -->
+          </div>
+        </article>
+
+        <!-- Card 4.2: IndexedDB Structured NoSQL Database -->
+        <article data-keywords="indexeddb database store async transaction nosql" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">IndexedDB Object Store</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">window.indexedDB (Async Transactional DB)</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300">Asynchronous</span>
+          </div>
+
+          <div class="flex gap-2 text-xs">
+            <input id="idbNoteInput" type="text" placeholder="Add structured record to IndexedDB..." class="flex-1 px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
+            <button id="idbAddBtn" type="button" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition shrink-0">Insert</button>
+            <button id="idbClearBtn" type="button" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold transition shrink-0">Wipe</button>
+          </div>
+
+          <ul id="idbRecordsList" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-xs min-h-[96px] max-h-36 overflow-y-auto space-y-1.5">
+            <li class="text-slate-400">Initializing IndexedDB...</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 5: DEVICE, DRAG-AND-DROP & OBSERVER APIS                    -->
+    <!-- =================================================================== -->
+    <section data-section="device" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 05</span>
+          <h2 class="text-2xl font-bold tracking-tight">Drag &amp; Drop, Hardware &amp; DOM Observers</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Native pointer transfers, geolocation, fullscreen mode, and layout observers.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card 5.1: HTML5 Native Drag & Drop API (with touch-accessible move buttons) -->
+        <article data-keywords="drag drop draggable dataTransfer kanban" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">Native Drag &amp; Drop API</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">draggable="true", ondragstart, ondragover, ondrop</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">Touch + Mouse</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <!-- Drop Zone A -->
+            <div id="zoneTodo" data-zone="todo" class="drop-zone p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border-2 border-dashed border-slate-300 dark:border-slate-700 min-h-[140px] space-y-2 transition-colors">
+              <div class="font-bold text-slate-500 uppercase tracking-wider text-[10px]">Backlog Zone</div>
+              <div id="dragItem1" draggable="true" class="drag-item p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between gap-1">
+                <span class="font-medium">🚀 Ship HTML5 App</span>
+                <button type="button" class="swap-zone-btn px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px]" title="Move item">⇄</button>
+              </div>
+              <div id="dragItem2" draggable="true" class="drag-item p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between gap-1">
+                <span class="font-medium">🎨 Tune Canvas FPS</span>
+                <button type="button" class="swap-zone-btn px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px]" title="Move item">⇄</button>
+              </div>
+            </div>
+
+            <!-- Drop Zone B -->
+            <div id="zoneDone" data-zone="done" class="drop-zone p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border-2 border-dashed border-emerald-300 dark:border-emerald-800 min-h-[140px] space-y-2 transition-colors">
+              <div class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider text-[10px]">Completed Zone</div>
+              <div id="dragItem3" draggable="true" class="drag-item p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between gap-1">
+                <span class="font-medium">✅ Semantic Audit</span>
+                <button type="button" class="swap-zone-btn px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px]" title="Move item">⇄</button>
+              </div>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-500">Drag cards between columns on desktop, or tap <code class="font-mono">⇄</code> on mobile touchscreens.</p>
+        </article>
+
+        <!-- Card 5.2: Geolocation, Fullscreen, Page Visibility & ResizeObserver -->
+        <article id="observerCard" data-keywords="geolocation fullscreen visibilitychange resizeobserver intersectionobserver" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">Device &amp; Environment APIs</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">Geolocation, Fullscreen, Visibility &amp; ResizeObserver</p>
+            </div>
+            <button id="fullscreenBtn" type="button" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition">
+              ⛶ Fullscreen Card
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <!-- Geolocation -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="font-semibold">Geolocation API</div>
+              <p id="geoOutput" class="font-mono text-[11px] text-slate-500">Coordinates: Not requested</p>
+              <button id="geoBtn" type="button" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-semibold transition">
+                Locate Me
+              </button>
+            </div>
+
+            <!-- Live ResizeObserver & Page Visibility -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1.5 font-mono text-[11px]">
+              <div class="font-sans font-semibold text-xs">Live Observers</div>
+              <div>Card Size: <span id="resizeReadout" class="text-indigo-600 dark:text-indigo-400 font-bold">--</span></div>
+              <div>Tab State: <span id="visibilityReadout" class="text-emerald-600 dark:text-emerald-400 font-bold">visible</span></div>
+              <div>Tab Switches: <span id="visibilityCount" class="font-bold">0</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 6: CONCURRENCY, WORKERS & COMMUNICATION APIS                -->
+    <!-- =================================================================== -->
+    <section data-section="apis" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-orange-600 dark:text-orange-400 font-semibold">Section 06</span>
+          <h2 class="text-2xl font-bold tracking-tight">Web Workers, History, Speech &amp; Messaging</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Multi-threaded background computation, SPA routing, voice synthesis, and cross-tab channels.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card 6.1: Web Workers (Multi-threaded Prime Sieve) -->
+        <article data-keywords="web worker thread background blob prime compute" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">Web Workers (Background Thread)</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">new Worker(blobURL) &amp; postMessage()</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300">Off-Main-Thread</span>
+          </div>
+
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Spawn a dedicated background thread to calculate all prime numbers up to <strong>2,500,000</strong> without blocking UI animations or input responsiveness.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button id="runWorkerBtn" type="button" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition">
+              Run Prime Sieve in Worker
+            </button>
+            <span id="workerStatus" class="font-mono text-xs text-slate-500">Idle</span>
+          </div>
+        </article>
+
+        <!-- Card 6.2: History API, BroadcastChannel, Web Speech & Clipboard -->
+        <article data-keywords="history pushstate broadcastchannel speech synthesis clipboard copy" class="feature-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold">History, Speech, Broadcast &amp; Clipboard</h3>
+              <p class="text-xs font-mono text-slate-500 mt-0.5">history.pushState, BroadcastChannel, speechSynthesis</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">Browser APIs</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <!-- History API -->
+            <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <div>
+                <span class="font-semibold">History API:</span>
+                <span id="historyStateLabel" class="font-mono text-slate-500 ml-1">#overview</span>
+              </div>
+              <div class="flex gap-1.5">
+                <button data-route="canvas-lab" class="history-btn px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-orange-500">Push #canvas-lab</button>
+                <button data-route="storage-lab" class="history-btn px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-orange-500">Push #storage-lab</button>
+              </div>
+            </div>
+
+            <!-- Web Speech Synthesis & Clipboard -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="speakBtn" type="button" class="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold transition">
+                🔊 Speak Greeting (Speech API)
+              </button>
+              <button id="copySnippetBtn" type="button" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold transition">
+                📋 Copy &lt;!DOCTYPE html&gt;
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- SEMANTIC FOOTER (<footer>)                                            -->
+  <!-- ===================================================================== -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+      <p>Built with pure <strong class="text-slate-700 dark:text-slate-200">&lt;!DOCTYPE html&gt;</strong> standards, Tailwind CSS &amp; Vanilla ES2024.</p>
+      <p class="font-mono">Single-File Self-Contained Architecture</p>
+    </div>
+  </footer>
+
+  <!-- Custom Non-Blocking Toast Notification (Replaces alert()) -->
+  <div id="toastBanner" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl text-xs font-medium flex items-center gap-2.5">
+    <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+    <span id="toastMessage">Notification</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- INTERACTIVE JAVASCRIPT CONTROLLER                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    /**
+     * Utility: Non-intrusive toast message box (never uses alert() or confirm())
+     */
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastMessage');
+      text.textContent = msg;
+      banner.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3200);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      /* -------------------------------------------------------------------
+       * 0. THEME TOGGLE, SEARCH FILTER, CATEGORY TABS & ONLINE STATUS
+       * ------------------------------------------------------------------- */
+      const htmlEl = document.documentElement;
+      const themeToggle = document.getElementById('themeToggle');
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        htmlEl.classList.add('dark');
+      }
+      themeToggle.addEventListener('click', () => {
+        htmlEl.classList.toggle('dark');
+      });
+
+      // Online/Offline listener
+      const networkBadge = document.getElementById('networkBadge');
+      const networkText = document.getElementById('networkText');
+      function updateOnlineStatus() {
+        const online = navigator.onLine;
+        networkText.textContent = online ? 'Online' : 'Offline';
+        networkBadge.className = online
+          ? 'hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30'
+          : 'hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30';
+      }
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+      updateOnlineStatus();
+
+      // Category filtering & live keyword search
+      let activeCategory = 'all';
+      const searchInput = document.getElementById('featureSearch');
+      const catButtons = document.querySelectorAll('.cat-btn');
+      const sections = document.querySelectorAll('section[data-section]');
+      const cards = document.querySelectorAll('.feature-card');
+      const emptyState = document.getElementById('emptyState');
+
+      function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCards = 0;
+
+        sections.forEach((sec) => {
+          const secCat = sec.dataset.section;
+          const catMatches = activeCategory === 'all' || activeCategory === secCat;
+          let secVisibleCount = 0;
+
+          sec.querySelectorAll('.feature-card').forEach((card) => {
+            const text = (card.textContent + ' ' + (card.dataset.keywords || '')).toLowerCase();
+            const matchesQuery = !query || text.includes(query);
+            const show = catMatches && matchesQuery;
+            card.classList.toggle('hidden', !show);
+            if (show) {
+              secVisibleCount++;
+              visibleCards++;
+            }
+          });
+
+          sec.classList.toggle('hidden', secVisibleCount === 0);
+        });
+
+        emptyState.classList.toggle('hidden', visibleCards > 0);
+      }
+
+      catButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.cat;
+          catButtons.forEach((b) => {
+            b.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 shrink-0 transition';
+          });
+          btn.className = 'cat-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white shadow-sm shrink-0 transition';
+          applyFilters();
+        });
+      });
+
+      searchInput.addEventListener('input', applyFilters);
+
+      /* -------------------------------------------------------------------
+       * 1. SEMANTICS: NATIVE <dialog>, <progress>, <meter>, <output>
+       * ------------------------------------------------------------------- */
+      const nativeDialog = document.getElementById('nativeDialog');
+      const openDialogBtn = document.getElementById('openDialogBtn');
+      const dialogResult = document.getElementById('dialogResult');
+
+      openDialogBtn.addEventListener('click', () => {
+        if (typeof nativeDialog.showModal === 'function') {
+          nativeDialog.showModal();
+        } else {
+          showToast('<dialog> is not supported in this browser.');
+        }
+      });
+
+      nativeDialog.addEventListener('close', () => {
+        dialogResult.textContent = `Dialog returnValue: "${nativeDialog.returnValue || 'dismissed'}"`;
+      });
+
+      // Gauge slider syncing <progress>, <meter>, and <output>
+      const gaugeSlider = document.getElementById('gaugeSlider');
+      const gaugeOutput = document.getElementById('gaugeOutput');
+      const demoProgress = document.getElementById('demoProgress');
+      const demoMeter = document.getElementById('demoMeter');
+
+      gaugeSlider.addEventListener('input', (e) => {
+        const val = Number(e.target.value);
+        gaugeOutput.textContent = `${val}%`;
+        demoProgress.value = val;
+        demoMeter.value = val;
+      });
+
+      /* -------------------------------------------------------------------
+       * 2. FORMS: COLOR PICKER, CONSTRAINT VALIDATION & DATA-* ATTRIBUTES
+       * ------------------------------------------------------------------- */
+      const colorInput = document.getElementById('colorInput');
+      const colorHex = document.getElementById('colorHex');
+      colorInput.addEventListener('input', (e) => {
+        colorHex.textContent = e.target.value.toUpperCase();
+      });
+
+      const validationForm = document.getElementById('validationForm');
+      const validationOutput = document.getElementById('validationOutput');
+      validationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailEl = document.getElementById('valEmail');
+        const patEl = document.getElementById('valPattern');
+
+        if (!emailEl.checkValidity()) {
+          validationOutput.textContent = `Invalid Email: ${emailEl.validationMessage}`;
+          validationOutput.className = 'font-mono text-rose-500';
+          return;
+        }
+        if (!patEl.checkValidity()) {
+          validationOutput.textContent = 'Pattern mismatch: Must be 6-digit hex (e.g. #FF5733)';
+          validationOutput.className = 'font-mono text-rose-500';
+          return;
+        }
+        validationOutput.textContent = 'ValidityState.valid === true ✓';
+        validationOutput.className = 'font-mono text-emerald-500 font-semibold';
+        showToast('HTML5 Constraint Validation passed!');
+      });
+
+      // Read custom data-* attributes via element.dataset
+      const datasetBadge = document.getElementById('datasetBadge');
+      datasetBadge.textContent = `dataset: ${datasetBadge.dataset.spec} v${datasetBadge.dataset.version}`;
+
+      /* -------------------------------------------------------------------
+       * 3. GRAPHICS & MEDIA: 2D <canvas>, <svg>, <audio>, <video>
+       * ------------------------------------------------------------------- */
+      const canvas = document.getElementById('demoCanvas');
+      const wrapper = document.getElementById('canvasWrapper');
+      const ctx = canvas.getContext('2d');
+      let brushColor = '#f97316';
+      let isDrawing = false;
+      let lastPos = null;
+
+      function resizeCanvas() {
+        const rect = wrapper.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        drawHarmonicWave();
+      }
+
+      function drawHarmonicWave() {
+        const w = wrapper.clientWidth;
+        const h = wrapper.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+        ctx.lineWidth = 2.5;
+        for (let line = 0; line < 3; line++) {
+          ctx.beginPath();
+          ctx.strokeStyle = line === 0 ? '#f97316' : line === 1 ? '#38bdf8' : '#34d399';
+          for (let x = 0; x <= w; x += 4) {
+            const y = h / 2 + Math.sin(x * 0.03 + line * 1.4) * (24 + line * 8);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+      }
+
+      function getPointerPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      }
+
+      function startDraw(e) {
+        isDrawing = true;
+        lastPos = getPointerPos(e);
+      }
+
+      function moveDraw(e) {
+        if (!isDrawing) return;
+        if (e.cancelable) e.preventDefault();
+        const pos = getPointerPos(e);
+        ctx.beginPath();
+        ctx.strokeStyle = brushColor;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.moveTo(lastPos.x, lastPos.y);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        lastPos = pos;
+      }
+
+      function endDraw() {
+        isDrawing = false;
+        lastPos = null;
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', moveDraw);
+      window.addEventListener('mouseup', endDraw);
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', moveDraw, { passive: false });
+      canvas.addEventListener('touchend', endDraw);
+
+      document.getElementById('clearCanvasBtn').addEventListener('click', () => {
+        ctx.clearRect(0, 0, wrapper.clientWidth, wrapper.clientHeight);
+      });
+      document.getElementById('burstCanvasBtn').addEventListener('click', drawHarmonicWave);
+
+      document.querySelectorAll('.brush-swatch').forEach((swatch) => {
+        swatch.addEventListener('click', () => {
+          brushColor = swatch.dataset.brush;
+          document.querySelectorAll('.brush-swatch').forEach((s) => s.classList.remove('ring-2', 'ring-offset-2', 'ring-orange-500'));
+          swatch.classList.add('ring-2', 'ring-offset-2', 'ring-orange-500');
+        });
+      });
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      // Interactive SVG slider
+      const svgRotate = document.getElementById('svgRotate');
+      const svgStar = document.getElementById('svgStar');
+      const svgDegLabel = document.getElementById('svgDegLabel');
+      svgRotate.addEventListener('input', (e) => {
+        const deg = Number(e.target.value);
+        const scale = 0.85 + Math.sin((deg * Math.PI) / 180) * 0.25;
+        svgDegLabel.textContent = `${deg}°`;
+        svgStar.setAttribute('transform', `translate(100 100) rotate(${deg}) scale(${scale.toFixed(2)}) translate(-100 -100)`);
+      });
+
+      // Synthesize a genuine WAV Blob in JS so <audio controls> plays offline with zero external URLs
+      function generateSynthesizedWavUrl() {
+        const sampleRate = 22050;
+        const duration = 2.0;
+        const numSamples = sampleRate * duration;
+        const buffer = new ArrayBuffer(44 + numSamples * 2);
+        const view = new DataView(buffer);
+
+        const writeStr = (offset, str) => {
+          for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+        };
+
+        writeStr(0, 'RIFF');
+        view.setUint32(4, 36 + numSamples * 2, true);
+        writeStr(8, 'WAVE');
+        writeStr(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true); // PCM
+        view.setUint16(22, 1, true); // Mono
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeStr(36, 'data');
+        view.setUint32(40, numSamples * 2, true);
+
+        // C-Major arpeggio (C4, E4, G4, C5)
+        const freqs = [261.63, 329.63, 392.0, 523.25];
+        for (let i = 0; i < numSamples; i++) {
+          const t = i / sampleRate;
+          const noteIdx = Math.min(3, Math.floor(t * 2));
+          const envelope = Math.exp(-3 * (t % 0.5));
+          const sample = Math.sin(2 * Math.PI * freqs[noteIdx] * t) * 0.35 * envelope;
+          view.setInt16(44 + i * 2, Math.max(-1, Math.min(1, sample)) * 32767, true);
+        }
+
+        const blob = new Blob([buffer], { type: 'audio/wav' });
+        return URL.createObjectURL(blob);
+      }
+      document.getElementById('nativeAudio').src = generateSynthesizedWavUrl();
+
+      // Generate a live procedural video stream via offscreen <canvas> + captureStream()
+      const nativeVideo = document.getElementById('nativeVideo');
+      const vidCanvas = document.createElement('canvas');
+      vidCanvas.width = 320;
+      vidCanvas.height = 140;
+      const vCtx = vidCanvas.getContext('2d');
+      let vFrame = 0;
+
+      function renderVideoFrame() {
+        vFrame++;
+        vCtx.fillStyle = '#090d16';
+        vCtx.fillRect(0, 0, 320, 140);
+
+        // Animated radar circles
+        for (let i = 1; i <= 3; i++) {
+          vCtx.beginPath();
+          vCtx.arc(160, 70, ((vFrame + i * 25) % 75), 0, Math.PI * 2);
+          vCtx.strokeStyle = `rgba(249, 115, 22, ${1 - ((vFrame + i * 25) % 75) / 75})`;
+          vCtx.lineWidth = 2;
+          vCtx.stroke();
+        }
+
+        vCtx.fillStyle = '#f8fafc';
+        vCtx.font = 'bold 13px monospace';
+        vCtx.textAlign = 'center';
+        vCtx.fillText(`HTML5 <video> STREAM • FRAME ${vFrame}`, 160, 74);
+        requestAnimationFrame(renderVideoFrame);
+      }
+      renderVideoFrame();
+
+      if (typeof vidCanvas.captureStream === 'function') {
+        nativeVideo.srcObject = vidCanvas.captureStream(30);
+        nativeVideo.play().catch(() => {});
+      }
+
+      /* -------------------------------------------------------------------
+       * 4. STORAGE: localStorage, sessionStorage & IndexedDB
+       * ------------------------------------------------------------------- */
+      const PREFIX = 'html5_demo_';
+      const storageList = document.getElementById('storageList');
+
+      function renderWebStorage() {
+        const items = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(PREFIX)) {
+            items.push(`[local] ${k.replace(PREFIX, '')} = "${localStorage.getItem(k)}"`);
+          }
+        }
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const k = sessionStorage.key(i);
+          if (k && k.startsWith(PREFIX)) {
+            items.push(`[session] ${k.replace(PREFIX, '')} = "${sessionStorage.getItem(k)}"`);
+          }
+        }
+        storageList.innerHTML = items.length
+          ? items.map((line) => `<div>• ${line}</div>`).join('')
+          : '<div class="text-slate-400">No demo keys saved yet. Add one above!</div>';
+      }
+
+      document.getElementById('saveStorageBtn').addEventListener('click', () => {
+        const key = document.getElementById('storageKey').value.trim();
+        const val = document.getElementById('storageVal').value.trim();
+        const type = document.getElementById('storageType').value;
+        if (!key) {
+          showToast('Please enter a storage key name.');
+          return;
+        }
+        const target = type === 'local' ? localStorage : sessionStorage;
+        target.setItem(PREFIX + key, val || '(empty)');
+        renderWebStorage();
+        showToast(`Saved "${key}" to ${type}Storage`);
+      });
+
+      document.getElementById('clearStorageBtn').addEventListener('click', () => {
+        [localStorage, sessionStorage].forEach((store) => {
+          Object.keys(store).forEach((k) => {
+            if (k.startsWith(PREFIX)) store.removeItem(k);
+          });
+        });
+        renderWebStorage();
+        showToast('Cleared demo Web Storage keys.');
+      });
+      renderWebStorage();
+
+      // IndexedDB Demo
+      const idbRecordsList = document.getElementById('idbRecordsList');
+      let idbInstance = null;
+
+      function initIndexedDB() {
+        if (!window.indexedDB) {
+          idbRecordsList.innerHTML = '<li class="text-rose-500">IndexedDB not supported.</li>';
+          return;
+        }
+        const req = indexedDB.open('HTML5ShowcaseDB', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('notes')) {
+            db.createObjectStore('notes', { keyPath: 'id', autoIncrement: true });
+          }
+        };
+        req.onsuccess = (e) => {
+          idbInstance = e.target.result;
+          renderIdbRecords();
+        };
+        req.onerror = () => {
+          idbRecordsList.innerHTML = '<li class="text-amber-500">IndexedDB blocked in private/sandbox context.</li>';
+        };
+      }
+
+      function renderIdbRecords() {
+        if (!idbInstance) return;
+        const tx = idbInstance.transaction('notes', 'readonly');
+        const store = tx.objectStore('notes');
+        const getAll = store.getAll();
+        getAll.onsuccess = () => {
+          const rows = getAll.result;
+          idbRecordsList.innerHTML = rows.length
+            ? rows.map((r) => `<li>#${r.id}: ${r.text} <span class="text-slate-400">(${r.time})</span></li>`).join('')
+            : '<li class="text-slate-400">IndexedDB store is empty. Insert a record above!</li>';
+        };
+      }
+
+      document.getElementById('idbAddBtn').addEventListener('click', () => {
+        if (!idbInstance) return;
+        const input = document.getElementById('idbNoteInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const tx = idbInstance.transaction('notes', 'readwrite');
+        tx.objectStore('notes').add({ text, time: new Date().toLocaleTimeString() });
+        tx.oncomplete = () => {
+          input.value = '';
+          renderIdbRecords();
+          showToast('Inserted record into IndexedDB!');
+        };
+      });
+
+      document.getElementById('idbClearBtn').addEventListener('click', () => {
+        if (!idbInstance) return;
+        const tx = idbInstance.transaction('notes', 'readwrite');
+        tx.objectStore('notes').clear();
+        tx.oncomplete = () => {
+          renderIdbRecords();
+          showToast('IndexedDB object store wiped.');
+        };
+      });
+      initIndexedDB();
+
+      /* -------------------------------------------------------------------
+       * 5. DRAG & DROP, GEOLOCATION, FULLSCREEN, VISIBILITY & RESIZEOBSERVER
+       * ------------------------------------------------------------------- */
+      let draggedId = null;
+      document.querySelectorAll('.drag-item').forEach((item) => {
+        item.addEventListener('dragstart', (e) => {
+          draggedId = item.id;
+          e.dataTransfer.setData('text/plain', item.id);
+          item.classList.add('opacity-50');
+        });
+        item.addEventListener('dragend', () => {
+          item.classList.remove('opacity-50');
+        });
+      });
+
+      const zoneTodo = document.getElementById('zoneTodo');
+      const zoneDone = document.getElementById('zoneDone');
+
+      document.querySelectorAll('.drop-zone').forEach((zone) => {
+        zone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          zone.classList.add('ring-2', 'ring-orange-500');
+        });
+        zone.addEventListener('dragleave', () => {
+          zone.classList.remove('ring-2', 'ring-orange-500');
+        });
+        zone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          zone.classList.remove('ring-2', 'ring-orange-500');
+          const id = e.dataTransfer.getData('text/plain') || draggedId;
+          const el = document.getElementById(id);
+          if (el) zone.appendChild(el);
+        });
+      });
+
+      // Touch-friendly fallback button for Drag & Drop cards
+      document.querySelectorAll('.swap-zone-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const card = btn.closest('.drag-item');
+          const currentZone = card.parentElement;
+          const targetZone = currentZone === zoneTodo ? zoneDone : zoneTodo;
+          targetZone.appendChild(card);
+        });
+      });
+
+      // Geolocation API
+      document.getElementById('geoBtn').addEventListener('click', () => {
+        const geoOutput = document.getElementById('geoOutput');
+        if (!navigator.geolocation) {
+          geoOutput.textContent = 'Geolocation unsupported';
+          return;
+        }
+        geoOutput.textContent = 'Requesting GPS/IP fix...';
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            geoOutput.textContent = `Lat: ${pos.coords.latitude.toFixed(4)}, Lng: ${pos.coords.longitude.toFixed(4)}`;
+            showToast('Geolocation coordinates acquired!');
+          },
+          (err) => {
+            geoOutput.textContent = `Permission/Sandbox: ${err.message}`;
+          },
+          { timeout: 6000 }
+        );
+      });
+
+      // Fullscreen API
+      const observerCard = document.getElementById('observerCard');
+      document.getElementById('fullscreenBtn').addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          observerCard.requestFullscreen?.().catch(() => {
+            showToast('Fullscreen blocked by iframe sandbox policy.');
+          });
+        } else {
+          document.exitFullscreen?.();
+        }
+      });
+
+      // ResizeObserver
+      const resizeReadout = document.getElementById('resizeReadout');
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const { width, height } = entry.contentRect;
+            resizeReadout.textContent = `${Math.round(width)}×${Math.round(height)}px`;
+          }
+        });
+        ro.observe(observerCard);
+      }
+
+      // Page Visibility API
+      let visSwitches = 0;
+      document.addEventListener('visibilitychange', () => {
+        visSwitches++;
+        document.getElementById('visibilityReadout').textContent = document.visibilityState;
+        document.getElementById('visibilityCount').textContent = String(visSwitches);
+      });
+
+      /* -------------------------------------------------------------------
+       * 6. WEB WORKERS, HISTORY API, SPEECH SYNTHESIS & CLIPBOARD
+       * ------------------------------------------------------------------- */
+      document.getElementById('runWorkerBtn').addEventListener('click', () => {
+        const statusEl = document.getElementById('workerStatus');
+        statusEl.textContent = 'Computing primes in background thread...';
+
+        // Create an inline Web Worker via Blob URL
+        const workerCode = `
+          self.onmessage = function(e) {
+            const limit = e.data;
+            const start = performance.now();
+            const sieve = new Uint8Array(limit + 1);
+            let count = 0;
+            for (let i = 2; i <= limit; i++) {
+              if (!sieve[i]) {
+                count++;
+                for (let j = i * i; j <= limit; j += i) sieve[j] = 1;
+              }
+            }
+            const ms = (performance.now() - start).toFixed(1);
+            self.postMessage({ count, ms });
+          };
+        `;
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        const worker = new Worker(workerUrl);
+
+        worker.onmessage = (e) => {
+          statusEl.textContent = `Found ${e.data.count.toLocaleString()} primes in ${e.data.ms}ms!`;
+          worker.terminate();
+          URL.revokeObjectURL(workerUrl);
+          showToast('Web Worker finished off-main-thread task!');
+        };
+
+        worker.postMessage(2500000);
+      });
+
+      // History API (pushState)
+      document.querySelectorAll('.history-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const route = `#${btn.dataset.route}`;
+          try {
+            history.pushState({ section: btn.dataset.route }, '', route);
+          } catch (_) {
+            // Fallback in restricted sandbox frames
+          }
+          document.getElementById('historyStateLabel').textContent = route;
+          showToast(`History state updated to ${route}`);
+        });
+      });
+
+      // Web Speech API (SpeechSynthesis)
+      document.getElementById('speakBtn').addEventListener('click', () => {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance('Welcome to the HTML5 Complete Feature Showcase!');
+          utterance.rate = 1.05;
+          window.speechSynthesis.speak(utterance);
+          showToast('Speaking via window.speechSynthesis...');
+        } else {
+          showToast('SpeechSynthesis API not available in this browser.');
+        }
+      });
+
+      // Clipboard Copy via document.execCommand('copy')
+      document.getElementById('copySnippetBtn').addEventListener('click', () => {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = '<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"><title>HTML5</title></head>\n<body></body>\n</html>';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast('Copied HTML5 boilerplate to clipboard!');
+      });
+    });
+  </script>
+</body>
+</html>
